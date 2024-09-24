@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #inputText, #outputText { width: 100%; height: 200px; margin: 10px 0; }
+        button { padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:disabled { background-color: #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Text Summarization Tool</h1>
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+    <button id="summarizeButton" onclick="summarizeText()">Summarize</button>
+    <h2>Summary:</h2>
+    <textarea id="outputText" readonly></textarea>
+
+    <script>
+        async function summarizeText() {
+            const text = document.getElementById('inputText').value;
+            document.getElementById('summarizeButton').disabled = true;
+            const response = await fetch('/summarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            });
+            const result = await response.json();
+            document.getElementById('outputText').value = result.summary;
+            document.getElementById('summarizeButton').disabled = false;
+        }
+    </script>
+</body>
+</html>
